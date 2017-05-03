@@ -190,8 +190,35 @@ void DestroyGraph(GraphMtx *g)
 	g->MaxVertices = g->NumEdges  = g->NumVertices = 0;
 }
 
-int GetFirstNeighbor(GraphMtx *g,T v);
-int GetNextNeighbor(GraphMtx *g,T v,T w);
+int GetFirstNeighbor(GraphMtx *g,T v)   //获取与该顶点附近的第一个邻点
+{
+	int p = GetGraphPos(g,v);
+	if(p == -1)
+		return -1;
+
+	for(int i=0;i<g->NumVertices;i++)
+	{
+		if(g->Edge[p][i] == 1)
+			return i;
+	}
+	return -1;
+} 
+           //该函数的功能是求v的邻接点w的邻接点
+int GetNextNeighbor(GraphMtx *g,T v,T w)   //w代表第一个邻接点
+{
+	int pv = GetGraphPos(g,v);
+	int pw = GetGraphPos(g,w);
+	if(pv == -1 || pw == -1)
+		return -1;
+
+	for(int i = pw +1;i<g->NumVertices;i++)
+	{
+		if(g->Edge[pv][i] == 1)
+			return i;
+	}
+	return -1;
+}
+
 void Push(GraphMtx *g)
 {
 	printf("%d\n", g->NumEdges);
@@ -221,11 +248,16 @@ void Push(GraphMtx *g)
 
 //	RemoveEdge(&gm,'A','D');
 //	ShowGraph(&gm);
-    Push(&gm);
+//    Push(&gm);
 
-	RemoveVertex(&gm,'B');
-	ShowGraph(&gm);
-    Push(&gm);
+//	RemoveVertex(&gm,'B');
+//	ShowGraph(&gm);
+ //   Push(&gm);
+ 
+ 	int a = GetFirstNeighbor(&gm,'A');
+ 	printf("%d\n", a);
 
+ 	int p = GetNextNeighbor(&gm,'E','B');
+ 	printf("%d\n", p);
 	return 0;
 }
